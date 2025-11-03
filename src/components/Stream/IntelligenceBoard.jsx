@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { Lightbulb, ChevronRight } from 'lucide-react';
+import SimulateImplementPanel from './SimulateImplementPanel';
 import './IntelligenceBoard.css';
 
 const IntelligenceBoard = ({ proposals = [] }) => {
+  const [selectedProposal, setSelectedProposal] = useState(null);
+
   const getConfidenceClass = (confidence) => {
     if (confidence >= 80) return 'confidence-high';
     if (confidence >= 60) return 'confidence-medium';
@@ -42,13 +46,30 @@ const IntelligenceBoard = ({ proposals = [] }) => {
               </div>
 
               <div className="card-actions">
-                <button className="btn-simulate">Simulate</button>
-                <button className="btn-approve">Approve</button>
+                <button 
+                  className="btn-simulate"
+                  onClick={() => setSelectedProposal(proposal)}
+                >
+                  Simulate
+                </button>
+                <button 
+                  className="btn-approve"
+                  onClick={() => setSelectedProposal(proposal)}
+                >
+                  Implement
+                </button>
                 <button className="btn-details">
                   Details <ChevronRight size={16} />
                 </button>
               </div>
             </div>
+
+            {selectedProposal === proposal && (
+              <SimulateImplementPanel
+                proposal={proposal}
+                onClose={() => setSelectedProposal(null)}
+              />
+            )}
           </div>
         ))}
       </div>
